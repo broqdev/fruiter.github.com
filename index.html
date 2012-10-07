@@ -194,7 +194,7 @@
 
 <h2>Template</h2>
 
-<p>As we already know &#8216;ArraySizeHelper&#8217; is a function declaration, the template part in the macro is not hard to understand. According to the macro, the template for &#8216;ArraySizeHelper` can only accept &#8216;array type&#8217; as its parameter. It will generate specific declaration corresponding the parameter&#8217;s type automatically.</p>
+<p>As we already know <code>ArraySizeHelper</code> is a function declaration, the template part in the macro is not hard to understand. According to the macro, the template for <code>ArraySizeHelper</code> can only accept <code>array type</code> as its parameter. It will generate specific declaration corresponding the parameter&#8217;s type automatically.</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -217,17 +217,19 @@
 </span><span class='line'><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="n">f2</span><span class="p">);</span>
 </span><span class='line'><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="n">o</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">// expand to...</span>
+</span><span class='line'><span class="c1">// Template Instantiation...</span>
 </span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="kt">float</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">)[</span><span class="mi">5</span><span class="p">]))[</span><span class="mi">5</span><span class="p">];</span>
 </span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="n">foo</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">)[</span><span class="mi">8</span><span class="p">]))[</span><span class="mi">8</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>One point worth mention is that directly call &#8216;ArraySizeHelper&#8217; will cause error in the program, because &#8216;ArraySizeHelper&#8217; has no implement code.</p>
+<p>One point worth mention is that directly call <code>ArraySizeHelper</code> will cause error in the program, because <code>ArraySizeHelper</code> has no implement code.</p>
 
 <h2>Sizeof</h2>
 
-<p><code>sizeof</code> is a very interesting keyword. We usually use it to compute the size of special user-defined structure, or use it in the bit operation. It is natural to think it acts like a function, but actually it will return the computed result during compiling time instead of runing time, so we must consider it separately as a special language feature. The way &#8216;sizeof&#8217; used in the macro is very tricky, and I have not seen this usage in any other articles or codes before.</p>
+<p><code>sizeof</code> is a very interesting keyword. We usually use it to compute the size of special user-defined structure, or use it in the bit operation. It is natural to think it acts like a function, but actually it will return the computed result during compiling time instead of runing time, so we must consider it separately as a special language feature.</p>
+
+<p>The way &#8216;sizeof&#8217; used in the macro is very tricky, and I have not seen this usage in any other articles or codes before.</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -298,9 +300,9 @@
 
 <p>From above examples, we can find out that <code>sizeof</code> will treat reference types the same as their referring types, and it will treat function types the same as their return types. As mentioned above, <code>sizeof</code> is executed during compiling time, so it can accept function declarations as its parameter, and it does not care about the implement of those functions because it will not call them.</p>
 
-<h2>Conclusion</h2>
+<h2>Last Shot</h2>
 
-<p>Now we can give an example to show the full details how the ArraySizeHelper macro works.</p>
+<p>Now we can give an example to show how the ArraySizeHelper macro works.</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -318,7 +320,7 @@
 </span><span class='line'>
 </span><span class='line'><span class="n">arraysize</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">// expand to...</span>
+</span><span class='line'><span class="c1">// equal with...</span>
 </span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="kt">float</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">)[</span><span class="mi">5</span><span class="p">]))[</span><span class="mi">5</span><span class="p">];</span>
 </span><span class='line'><span class="k">sizeof</span><span class="p">(</span><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="n">f</span><span class="p">));</span>
 </span><span class='line'>
