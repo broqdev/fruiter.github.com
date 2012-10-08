@@ -226,7 +226,7 @@
 
 <p><code>sizeof</code> is a very interesting keyword. We usually use it to compute the size of special user-defined structure, or use it in the bit operation. It is natural to think it acts like a function, but actually it will return the computed result during compiling time instead of runing time, so we must consider it separately as a special language feature.</p>
 
-<p>The way &#8216;sizeof&#8217; used in the macro is very tricky, and I have not seen this usage in any other articles or codes before.</p>
+<p>The way <code>sizeof</code> used in the macro is very tricky, and I have not seen this usage in any other articles or codes before.</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -260,6 +260,7 @@
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
 <span class='line-number'>32</span>
+<span class='line-number'>33</span>
 </pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="c1">// sizeof reference</span>
 </span><span class='line'><span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
 </span><span class='line'><span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
@@ -279,7 +280,7 @@
 </span><span class='line'><span class="kt">int</span> <span class="n">sa</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
 </span><span class='line'><span class="kt">int</span> <span class="n">sra</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ra</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1">// sizeof function</span>
+</span><span class='line'><span class="c1">// sizeof function call</span>
 </span><span class='line'><span class="kt">int</span> <span class="n">fi</span><span class="p">();</span>
 </span><span class='line'><span class="kt">char</span> <span class="n">fc</span><span class="p">(</span><span class="kt">int</span> <span class="n">arg</span><span class="p">);</span>
 </span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">frs</span><span class="p">(</span><span class="kt">double</span> <span class="n">arg</span><span class="p">))[</span><span class="mi">3</span><span class="p">]</span> <span class="p">{</span>
@@ -289,13 +290,14 @@
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="c1">// what will happen?</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">sfi</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">fi</span><span class="p">);</span>
+</span><span class='line'><span class="c1">// int sfi = sizeof(fi); // error</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">sfi</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">fi</span><span class="p">());</span>
 </span><span class='line'><span class="kt">int</span> <span class="n">sfc</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">fc</span><span class="p">(</span><span class="mi">7</span><span class="p">));</span>
 </span><span class='line'><span class="kt">int</span> <span class="n">sfrs</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">fs</span><span class="p">(</span><span class="mf">2.2</span><span class="p">));</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>From above examples, we can find out that <code>sizeof</code> will treat reference types the same as their referring types, and it will treat function types the same as their return types. As mentioned above, <code>sizeof</code> is executed during compiling time, so it can accept function declarations as its parameter, and it does not care about the implement of those functions because it will not call them.</p>
+<p>From above examples, we can find out that <code>sizeof</code> will treat reference types the same as their referring types, and it will treat function calls the same as their return types. As mentioned above, <code>sizeof</code> is executed during compiling time, so it can accept function calls as its parameter without caring about the implement of those functions because it will not really call them.</p>
 
 <h2>Last Shot</h2>
 
@@ -371,6 +373,12 @@
   </footer>
 </article>
 
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
 </div>
 
 <aside class="sidebar">
@@ -400,6 +408,22 @@
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'fruiter';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://Fruiter.github.com/blog/2012/10/07/understand-arraysizehelper/';
+        var disqus_url = 'http://Fruiter.github.com/blog/2012/10/07/understand-arraysizehelper/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 
