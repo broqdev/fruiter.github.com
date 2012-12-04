@@ -9,7 +9,7 @@
   <meta name="author" content="fruiter">
 
   
-  <meta name="description" content="Intro In Chrome&#8217;s source code, arraysize is a macro used to calculate the number of elements in one array. It can be applied to different kinds &hellip;">
+  <meta name="description" content="Intro There are several common problems about the encoding in Python. Here are my notes for them. All experiments are carried out in Windows. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +72,220 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
+        <h1 class="entry-title"><a href="/blog/2012/12/04/python-encoding-misc/">Python Encoding Misc</a></h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-04T14:55:00+08:00" pubdate data-updated="true">Dec 4<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Intro</h2>
+
+<p>There are several common problems about the encoding in Python. Here are my notes for them. All experiments are carried out in <code>Windows</code>.</p>
+
+<h2>Interpreter</h2>
+
+<p>Python&#8217;s interpreter cannot automatically detect source files&#8217; encoding, so any Non-ASCII characters will break the execution even they are just in comment.</p>
+
+<figure class='code'><figcaption><span>cp936.py  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># This will fail</span>
+</span><span class='line'><span class="c"># 你好</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We have to explicitly declare the encoding. The following is an example for <code>cp936</code>.</p>
+
+<figure class='code'><figcaption><span>cp936.py  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># coding=cp936</span>
+</span><span class='line'><span class="c"># This is ok</span>
+</span><span class='line'><span class="c"># 你好</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>One exception is that the interpreter can handle the <code>utf-8</code> file with the <code>BOM</code> header correctly, even without the specific declaration.
+The interpreter cannot handle the <code>unicode</code> files such as those created by <code>Notepad</code> in Windows, even with the declaration.
+If the file&#8217;s encoding is not consistent with the declaration, there may be other encoding/decoding problems.</p>
+
+<h2>Print</h2>
+
+<p>We usually use Python&#8217;s <code>Print</code> function to output strings to <code>sys.stdout</code>, but this function cannot handle the string&#8217;s encoding properly either. If the paramater is an <code>unicode PyString</code>, <code>Print</code> can encode it into the system&#8217;s local encoding and output correctly. Here are two examples.</p>
+
+<figure class='code'><figcaption><span>cp936.py  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># coding=cp936</span>
+</span><span class='line'><span class="c"># unicode string, this is ok</span>
+</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">u&quot;你好&quot;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">s</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>utf8.py  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># coding=utf-8</span>
+</span><span class='line'><span class="c"># unicode string, this is ok</span>
+</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">u&quot;你好&quot;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">s</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If the parameter is not a <code>unicode PyString</code>, <code>Print</code> just treat it as <code>ASCII</code> and send to <code>sys.stdout</code>. This will be fine if the parameter use the same as the system&#8217;s local encoding, but if it will cause error in other circumstances.</p>
+
+<figure class='code'><figcaption><span>cp936.py  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># coding=cp936</span>
+</span><span class='line'><span class="c"># same as local encoding, this is ok on my machine</span>
+</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">&quot;你好&quot;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">s</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>utf8.py  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># coding=utf-8</span>
+</span><span class='line'><span class="c"># This will be wrong</span>
+</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">&quot;你好&quot;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">s</span>
+</span><span class='line'><span class="c"># This will be wrong too</span>
+</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\xE4\xBD\xA0\xE5\xA5\xBD</span><span class="s">&quot;</span> <span class="c"># the same sequence</span>
+</span><span class='line'><span class="k">print</span> <span class="n">s</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We must decode the parameter into <code>unicode</code> to solve this problem.</p>
+
+<figure class='code'><figcaption><span>utf8.py  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># coding=utf-8</span>
+</span><span class='line'><span class="c"># This will be ok</span>
+</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">&quot;你好&quot;</span>
+</span><span class='line'><span class="k">print</span> <span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="c"># This will be ok too</span>
+</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\xE4\xBD\xA0\xE5\xA5\xBD</span><span class="s">&quot;</span> <span class="c"># the same sequence</span>
+</span><span class='line'><span class="k">print</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Embedded Python</h2>
+
+<p>In some tasks we need to do some interaciton between <code>C</code> and <code>Python</code>, there are also some tricky encoding problems. The following is a <code>C</code> program calling the <code>Print</code> function.</p>
+
+<figure class='code'><figcaption><span>print.c  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#include &lt;Python.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">const</span> <span class="n">char</span><span class="o">*</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">&quot;# coding=utf-8</span><span class="se">\n</span><span class="s">&quot;</span> <span class="s">&quot;s=&#39;你好&#39;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="s">&quot;print unicode(s, &#39;utf-8&#39;)&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">Py_Initialize</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">PyRun_SimpleString</span><span class="p">(</span><span class="nb">str</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Py_Finalize</span><span class="p">();</span>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If we save this source file as <code>utf-8</code> and compile it with <code>Visual C++</code>, the result of the program will be wrong. But the following program will be right.</p>
+
+<figure class='code'><figcaption><span>print.c  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#include &lt;Python.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="o">//</span> <span class="n">even</span> <span class="n">the</span> <span class="nb">file</span> <span class="ow">is</span> <span class="n">saved</span> <span class="k">as</span> <span class="n">utf</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="n">the</span> <span class="n">string</span> <span class="n">here</span> <span class="n">will</span> <span class="n">be</span> <span class="n">compiled</span> <span class="n">into</span> <span class="n">local</span> <span class="n">encoding</span>
+</span><span class='line'>    <span class="n">const</span> <span class="n">char</span><span class="o">*</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">&quot;# coding=cp936</span><span class="se">\n</span><span class="s">&quot;</span> <span class="s">&quot;s=&#39;你好&#39;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="s">&quot;print unicode(s, &#39;cp936&#39;)&quot;</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">Py_Initialize</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">PyRun_SimpleString</span><span class="p">(</span><span class="nb">str</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Py_Finalize</span><span class="p">();</span>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The problem is that the compiler will convert the string into local encoding without caring about the encoding of the file. What&#8217;s worse, I cannot find any way to change this setting. So to solve this problem, we should convert strings to sepcial encoding manually but not let the compiler do it.</p>
+
+<h2>Conclusion</h2>
+
+<p>In conclusion, to avoid other similar problems, we should only use <code>unicode</code> strings in Python, and use resource files instead of writing strings directly in the source files.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -181,7 +395,7 @@
 </span><span class='line'><span class="kt">char</span><span class="o">*</span> <span class="p">(</span><span class="o">*</span><span class="n">pfp</span><span class="p">)()</span> <span class="o">=</span> <span class="n">fp</span><span class="p">;</span>
 </span><span class='line'><span class="c1">// ??</span>
 </span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">rfc</span><span class="p">)()</span> <span class="o">=</span> <span class="n">fc</span><span class="p">;</span>
-</span><span class='line'><span class="kt">char</span><span class="o">&amp;</span> <span class="p">(</span><span class="n">rfr</span><span class="p">)()</span> <span class="o">=</span> <span class="n">fr</span><span class="p">;</span>
+</span><span class='line'><span class="kt">char</span><span class="o">&amp;</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">rfr</span><span class="p">)()</span> <span class="o">=</span> <span class="n">fr</span><span class="p">;</span>
 </span><span class='line'><span class="c1">// ???</span>
 </span><span class='line'><span class="c1">// char (&amp;rfs)()[10]; //error</span>
 </span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">frs</span><span class="p">())[</span><span class="mi">10</span><span class="p">];</span>
@@ -352,6 +566,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/12/04/python-encoding-misc/">Python Encoding Misc</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2012/10/07/understand-arraysizehelper/">Understand ArraySizeHelper</a>
