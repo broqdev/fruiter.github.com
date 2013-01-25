@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>yet another blog</title>
+  <title>Install PhantomJS with NPM in Windows - yet another blog</title>
   <meta name="author" content="fruiter">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://Fruiter.github.com/">
+  <link rel="canonical" href="http://Fruiter.github.com/blog/2013/01/25/install-phantomjs-with-npm-in-windows/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -70,16 +70,13 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/2013/01/25/install-phantomjs-with-npm-in-windows/">Install PhantomJS With NPM in Windows</a></h1>
+      
+        <h1 class="entry-title">Install PhantomJS With NPM in Windows</h1>
       
     
     
@@ -103,7 +100,7 @@
   </header>
 
 
-  <div class="entry-content"><p>When we install phantomjs(1.8.0) with npm in Windows by <code>npm install phantomjs</code>, the process may fail and throw out an error like this:</p>
+<div class="entry-content"><p>When we install phantomjs(1.8.0) with npm in Windows by <code>npm install phantomjs</code>, the process may fail and throw out an error like this:</p>
 
 <pre><code>Error with http request { connection: 'close',
   location: 'http://124.29.1.238/download/20544659/21242686/3/zip/156/114/1359054422428_370/phantomjs-1.8.0-windows.zip'
@@ -686,24 +683,16 @@ Please, don't. https://github.com/styleguide/templates/2.0
 
 <p>If everything is fine, this time it will succeed.</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/2012/12/04/python-encoding-misc/">Python Encoding Misc</a></h1>
+  
+
+<span class="byline author vcard">Posted by <span class="fn">fruiter</span></span>
+
       
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -715,471 +704,36 @@ Please, don't. https://github.com/styleguide/templates/2.0
   
 
 
-<time datetime="2012-12-04T14:55:00+08:00" pubdate data-updated="true">Dec 4<span>th</span>, 2012</time>
-        
-      </p>
+<time datetime="2013-01-25T14:38:00+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2013</time>
+      
+
+
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><h2>Intro</h2>
-
-<p>There are several common problems about the encoding in Python. Here are my notes for them. All experiments are carried out in <code>Windows</code>.</p>
-
-<h2>Interpreter</h2>
-
-<p>Python&#8217;s interpreter cannot automatically detect source files&#8217; encoding, so any Non-ASCII characters will break the execution even they are just in comment.</p>
-
-<figure class='code'><figcaption><span>cp936.py  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># This will fail</span>
-</span><span class='line'><span class="c"># 你好</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We have to explicitly declare the encoding. The following is an example for <code>cp936</code>.</p>
-
-<figure class='code'><figcaption><span>cp936.py  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># coding=cp936</span>
-</span><span class='line'><span class="c"># This is ok</span>
-</span><span class='line'><span class="c"># 你好</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>One exception is that the interpreter can handle the <code>utf-8</code> file with the <code>BOM</code> header correctly, even without the specific declaration.
-The interpreter cannot handle the <code>unicode</code> files such as those created by <code>Notepad</code> in Windows, even with the declaration.
-If the file&#8217;s encoding is not consistent with the declaration, there may be other encoding/decoding problems.</p>
-
-<h2>Print</h2>
-
-<p>We usually use Python&#8217;s <code>Print</code> function to output strings to <code>sys.stdout</code>, but this function cannot handle the string&#8217;s encoding properly either. If the paramater is an <code>unicode PyString</code>, <code>Print</code> can encode it into the system&#8217;s local encoding and output correctly. Here are two examples.</p>
-
-<figure class='code'><figcaption><span>cp936.py  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># coding=cp936</span>
-</span><span class='line'><span class="c"># unicode string, this is ok</span>
-</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">u&quot;你好&quot;</span>
-</span><span class='line'><span class="k">print</span> <span class="n">s</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>utf8.py  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># coding=utf-8</span>
-</span><span class='line'><span class="c"># unicode string, this is ok</span>
-</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">u&quot;你好&quot;</span>
-</span><span class='line'><span class="k">print</span> <span class="n">s</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If the parameter is not a <code>unicode PyString</code>, <code>Print</code> just treat it as <code>ASCII</code> and send to <code>sys.stdout</code>. This will be fine if the parameter use the same as the system&#8217;s local encoding, but if it will cause error in other circumstances.</p>
-
-<figure class='code'><figcaption><span>cp936.py  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># coding=cp936</span>
-</span><span class='line'><span class="c"># same as local encoding, this is ok on my machine</span>
-</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">&quot;你好&quot;</span>
-</span><span class='line'><span class="k">print</span> <span class="n">s</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>utf8.py  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># coding=utf-8</span>
-</span><span class='line'><span class="c"># This will be wrong</span>
-</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">&quot;你好&quot;</span>
-</span><span class='line'><span class="k">print</span> <span class="n">s</span>
-</span><span class='line'><span class="c"># This will be wrong too</span>
-</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\xE4\xBD\xA0\xE5\xA5\xBD</span><span class="s">&quot;</span> <span class="c"># the same sequence</span>
-</span><span class='line'><span class="k">print</span> <span class="n">s</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We must decode the parameter into <code>unicode</code> to solve this problem.</p>
-
-<figure class='code'><figcaption><span>utf8.py  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># coding=utf-8</span>
-</span><span class='line'><span class="c"># This will be ok</span>
-</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">&quot;你好&quot;</span>
-</span><span class='line'><span class="k">print</span> <span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="c"># This will be ok too</span>
-</span><span class='line'><span class="n">s</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\xE4\xBD\xA0\xE5\xA5\xBD</span><span class="s">&quot;</span> <span class="c"># the same sequence</span>
-</span><span class='line'><span class="k">print</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Embedded Python</h2>
-
-<p>In some tasks we need to do some interaciton between <code>C</code> and <code>Python</code>, there are also some tricky encoding problems. The following is a <code>C</code> program calling the <code>Print</code> function.</p>
-
-<figure class='code'><figcaption><span>print.c  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#include &lt;Python.h&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">const</span> <span class="n">char</span><span class="o">*</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">&quot;# coding=utf-8</span><span class="se">\n</span><span class="s">&quot;</span> <span class="s">&quot;s=&#39;你好&#39;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="s">&quot;print unicode(s, &#39;utf-8&#39;)&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">Py_Initialize</span><span class="p">();</span>
-</span><span class='line'>    <span class="n">PyRun_SimpleString</span><span class="p">(</span><span class="nb">str</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">Py_Finalize</span><span class="p">();</span>
-</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If we save this source file as <code>utf-8</code> and compile it with <code>Visual C++</code>, the result of the program will be wrong. But the following program will be right.</p>
-
-<figure class='code'><figcaption><span>print.c  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#include &lt;Python.h&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="o">//</span> <span class="n">even</span> <span class="n">the</span> <span class="nb">file</span> <span class="ow">is</span> <span class="n">saved</span> <span class="k">as</span> <span class="n">utf</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="n">the</span> <span class="n">string</span> <span class="n">here</span> <span class="n">will</span> <span class="n">be</span> <span class="n">compiled</span> <span class="n">into</span> <span class="n">local</span> <span class="n">encoding</span>
-</span><span class='line'>    <span class="n">const</span> <span class="n">char</span><span class="o">*</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">&quot;# coding=cp936</span><span class="se">\n</span><span class="s">&quot;</span> <span class="s">&quot;s=&#39;你好&#39;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="s">&quot;print unicode(s, &#39;cp936&#39;)&quot;</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">Py_Initialize</span><span class="p">();</span>
-</span><span class='line'>    <span class="n">PyRun_SimpleString</span><span class="p">(</span><span class="nb">str</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">Py_Finalize</span><span class="p">();</span>
-</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The problem is that the compiler will convert the string into local encoding without caring about the encoding of the file. What&#8217;s worse, I cannot find any way to change this setting. So to solve this problem, we should convert strings to sepcial encoding manually but not let the compiler do it.</p>
-
-<h2>Conclusion</h2>
-
-<p>In conclusion, to avoid other similar problems, we should only use <code>unicode</code> strings in Python, and use resource files instead of writing strings directly in the source files.</p>
+      <div class="sharing">
+  
+  
+  
 </div>
-  
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <!-- Now we're back to normal posts. Note the links used under href in both headers.-->
-        <h1 class="entry-title"><a href="/blog/2012/10/07/understand-arraysizehelper/">Understand ArraySizeHelper</a></h1>
+        <a class="basic-alignment left articlenav" href="/blog/2012/12/04/python-encoding-misc/" title="Previous Post: Python Encoding Misc">&laquo; Python Encoding Misc</a>
       
-    
-    
-      <p class="meta">
-        
+      
+    </p>
+  </footer>
+</article>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-07T16:14:00+08:00" pubdate data-updated="true">Oct 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Intro</h2>
-
-<p>In Chrome&#8217;s source code, <code>arraysize</code> is a macro used to calculate the number of elements in one array. It can be applied to different kinds of arrays without indicate the arrays&#8217; type explicitly. The code is shown as below.</p>
-
-<figure class='code'><figcaption><span>ArraySizeHelper  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">N</span><span class="o">&gt;</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="n">T</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">)[</span><span class="n">N</span><span class="p">]))[</span><span class="n">N</span><span class="p">];</span>
-</span><span class='line'><span class="cp">#define arraysize(array) (sizeof(ArraySizeHelper(array)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The code is short, but it seems not very easy for C++ beginner to learn how it works. In order to understand this tircky macro, first we need to understand 3 special language features respectively.</p>
-
-<h2>Reference</h2>
-
-<p>Normally Reference is used in C++ to substitute Pointer in C in function call, so the function can have a clearer declaration and better data abstraction. But sometimes, the syntax of Reference is little complicated.</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="c1">// cliche</span>
-</span><span class='line'><span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
-</span><span class='line'><span class="kt">char</span><span class="o">*</span> <span class="n">p</span><span class="p">;</span>
-</span><span class='line'><span class="kt">char</span><span class="o">&amp;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// dizzy code</span>
-</span><span class='line'><span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
-</span><span class='line'><span class="kt">char</span><span class="o">*</span> <span class="n">pp</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">*</span><span class="n">ps</span><span class="p">)[</span><span class="mi">10</span><span class="p">];</span>
-</span><span class='line'><span class="c1">// ?</span>
-</span><span class='line'><span class="c1">// char&amp; rr[10]; //error</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">rs</span><span class="p">)[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// how about this</span>
-</span><span class='line'><span class="kt">char</span> <span class="n">fc</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="sc">&#39;a&#39;</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'><span class="kt">char</span><span class="o">*</span> <span class="n">fp</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'><span class="c1">// char fs()[10]; //error</span>
-</span><span class='line'><span class="kt">char</span><span class="o">&amp;</span> <span class="n">fr</span><span class="p">()</span> <span class="p">{</span> <span class="kt">char</span> <span class="n">c</span><span class="o">=</span><span class="sc">&#39;a&#39;</span><span class="p">;</span> <span class="k">return</span> <span class="n">c</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">fr_decl</span><span class="p">());</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">fr_impl</span><span class="p">())</span> <span class="p">{</span> <span class="kt">char</span> <span class="n">c</span><span class="o">=</span><span class="sc">&#39;a&#39;</span><span class="p">;</span> <span class="k">return</span> <span class="n">c</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// tricky</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">*</span><span class="n">pfc</span><span class="p">)()</span> <span class="o">=</span> <span class="n">fc</span><span class="p">;</span>
-</span><span class='line'><span class="kt">char</span><span class="o">*</span> <span class="p">(</span><span class="o">*</span><span class="n">pfp</span><span class="p">)()</span> <span class="o">=</span> <span class="n">fp</span><span class="p">;</span>
-</span><span class='line'><span class="c1">// ??</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">rfc</span><span class="p">)()</span> <span class="o">=</span> <span class="n">fc</span><span class="p">;</span>
-</span><span class='line'><span class="kt">char</span><span class="o">&amp;</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">rfr</span><span class="p">)()</span> <span class="o">=</span> <span class="n">fr</span><span class="p">;</span>
-</span><span class='line'><span class="c1">// ???</span>
-</span><span class='line'><span class="c1">// char (&amp;rfs)()[10]; //error</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">frs</span><span class="p">())[</span><span class="mi">10</span><span class="p">];</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">frs_impl</span><span class="p">())[</span><span class="mi">10</span><span class="p">]</span> <span class="p">{</span> <span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span> <span class="k">return</span> <span class="n">s</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rfrs</span><span class="p">)())[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">frs</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Through above examples, we can understand that <code>ArraySizeHelper</code> part involved in the macro code is actually a function declaration. For example, <code>ArraySizeHelper</code> in the code <code>int arr[10]; ArraySizeHelper(arr);</code> is equal with <code>char (&amp;ArraySizeHelper(int (&amp;array)[10]))[10]</code>, which is a function accepts a reference of an int array(size 10) as an parameter, and returns a reference of a char array(size 10) as result.</p>
-
-<h2>Template</h2>
-
-<p>As we already know <code>ArraySizeHelper</code> is a function declaration, the template part in the macro is not hard to understand. According to the macro, the template for <code>ArraySizeHelper</code> can only accept <code>array type</code> as its parameter. It will generate specific declaration corresponding the parameter&#8217;s type automatically.</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="c1">// simulate</span>
-</span><span class='line'><span class="kt">float</span> <span class="n">f</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
-</span><span class='line'><span class="kt">float</span> <span class="n">f2</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
-</span><span class='line'><span class="n">foo</span> <span class="n">o</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
-</span><span class='line'><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="n">f2</span><span class="p">);</span>
-</span><span class='line'><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="n">o</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Template Instantiation...</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="kt">float</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">)[</span><span class="mi">5</span><span class="p">]))[</span><span class="mi">5</span><span class="p">];</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="n">foo</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">)[</span><span class="mi">8</span><span class="p">]))[</span><span class="mi">8</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>One point worth mention is that directly call <code>ArraySizeHelper</code> will cause error in the program, because <code>ArraySizeHelper</code> has no implement code.</p>
-
-<h2>Sizeof</h2>
-
-<p><code>sizeof</code> is a very interesting keyword. We usually use it to compute the size of special user-defined structure, or use it in the bit operation. It is natural to think it acts like a function, but actually it will return the computed result during compiling time instead of runing time, so we must consider it separately as a special language feature.</p>
-
-<p>The way <code>sizeof</code> used in the macro is very tricky, and I have not seen this usage in any other articles or codes before.</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="c1">// sizeof reference</span>
-</span><span class='line'><span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
-</span><span class='line'><span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">7</span><span class="p">];</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">9</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">char</span><span class="o">&amp;</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
-</span><span class='line'><span class="kt">int</span><span class="o">&amp;</span> <span class="n">ri</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">rs</span><span class="p">)[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
-</span><span class='line'><span class="kt">int</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">ra</span><span class="p">)[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">src</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">rc</span><span class="p">);</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">sri</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ri</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="n">ss</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">srs</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">rs</span><span class="p">);</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">sa</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">sra</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ra</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// sizeof function call</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">fi</span><span class="p">();</span>
-</span><span class='line'><span class="kt">char</span> <span class="n">fc</span><span class="p">(</span><span class="kt">int</span> <span class="n">arg</span><span class="p">);</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">frs</span><span class="p">(</span><span class="kt">double</span> <span class="n">arg</span><span class="p">))[</span><span class="mi">3</span><span class="p">]</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="sc">&#39;h&#39;</span><span class="p">,</span> <span class="sc">&#39;i&#39;</span><span class="p">,</span> <span class="sc">&#39;\0&#39;</span><span class="p">};</span>
-</span><span class='line'>    <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">s</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">s</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// what will happen?</span>
-</span><span class='line'><span class="c1">// int sfi = sizeof(fi); // error</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">sfi</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">fi</span><span class="p">());</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">sfc</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">fc</span><span class="p">(</span><span class="mi">7</span><span class="p">));</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">sfrs</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">fs</span><span class="p">(</span><span class="mf">2.2</span><span class="p">));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>From above examples, we can find out that <code>sizeof</code> will treat reference types the same as their referring types, and it will treat function calls the same as their return types. As mentioned above, <code>sizeof</code> is executed during compiling time, so it can accept function calls as its parameter without caring about the implement of those functions because it will not really call them.</p>
-
-<h2>Last Shot</h2>
-
-<p>Now we can give an example to show how the ArraySizeHelper macro works.</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="kt">float</span> <span class="n">f</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">arraysize</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// equal with...</span>
-</span><span class='line'><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="kt">float</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">)[</span><span class="mi">5</span><span class="p">]))[</span><span class="mi">5</span><span class="p">];</span>
-</span><span class='line'><span class="k">sizeof</span><span class="p">(</span><span class="n">ArraySizeHelper</span><span class="p">(</span><span class="n">f</span><span class="p">));</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// equal with...</span>
-</span><span class='line'><span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">)[</span><span class="mi">5</span><span class="p">]);</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// return 5</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -1205,6 +759,7 @@ If the file&#8217;s encoding is not consistent with the declaration, there may b
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -1219,7 +774,10 @@ If the file&#8217;s encoding is not consistent with the declaration, there may b
       var disqus_shortname = 'fruiter';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://Fruiter.github.com/blog/2013/01/25/install-phantomjs-with-npm-in-windows/';
+        var disqus_url = 'http://Fruiter.github.com/blog/2013/01/25/install-phantomjs-with-npm-in-windows/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
