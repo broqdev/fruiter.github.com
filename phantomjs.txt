@@ -1,4 +1,0 @@
-Error with http request { connection: 'close',
-  location: 'http://124.29.1.238/download/20544659/21242686/3/zip/156/114/1359054422428_370/phantomjs-1.8.0-windows.zip'
- }
-
